@@ -24,3 +24,30 @@
 </div>
 <!--End col-->
 {% endblock %}
+
+'''
+In `views.py` where the `menu` view function is defined, you are passing a dictionary to the template `menu.html` with a single key `"menu"`:
+
+```python
+def menu(request):
+    menu_data = Menu.objects.all()
+    main_data = { "menu" : menu_data }
+    return render(request, 'menu.html', {"menu": main_data} )
+```
+
+Here, `main_data` is a dictionary where the key `"menu"` points to `menu_data`, which is a QuerySet of all the `Menu` objects in the database. Then, you are passing this `{ "menu": main_data }` dictionary as context data to the `menu.html` template.
+
+Therefore, in the `menu.html` template, `menu` (first level of loop) is a dictionary `main_data`, not a list or a QuerySet. To loop over all the `Menu` items, you need to use `menu.menu` where the first `menu` indicates the dictionary `main_data` and the second `.menu` indicates the actual list (QuerySet) of `Menu` objects obtained via `Menu.objects.all()`.
+
+That is why `{% for item in menu.menu %}` is required instead of `{% for item in menu %}`.
+
+However, I feel this is not the best design and might lead to confusion. An alternative way to handle this would be the following:
+
+```python
+def menu(request):
+    menu_data = Menu.objects.all()
+    return render(request, 'menu.html', {"menu": menu_data} )
+```
+
+In this case, you would directly use `menu` to refer to the list (QuerySet) of `Menu` objects in your template, and your for loop would indeed be `{% for item in menu %}`. This approach is a bit easier to understand and navigate.
+'''
