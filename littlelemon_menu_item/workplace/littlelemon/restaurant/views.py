@@ -32,4 +32,6 @@ def display_menu_item(request, pk=None):
         menu_item = Menu.objects.get(pk=pk)
     else:
         menu_item = ""
-    return render(request, 'menu_item.html', { "menu_item" : menu_item })
+    # My error1: passing 'menu.html' instead of 'menu_item.html'
+    # My error2: passing string "menu_item" instead of dict { "menu_item" : menu_item }
+    return render(request, 'menu_item.html', { "menu_item" : menu_item }) 
