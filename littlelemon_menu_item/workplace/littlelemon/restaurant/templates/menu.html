@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<h1>Menu</h1>
+<!--Begin col-->
+<div class="column">
+    <!-- Step 14: Create for loop -->
+    {% for item in menu.menu %}
+    <p>
+        <!-- Step 14: Add DTL variable for name -->
+        <!-- We are wrapping the item name within an <a> tag to make it a hyperlink -->
+        <a href="{% url 'menu_item' pk=item.pk %}">
+            <!-- 'pk=item.pk' is passing the primary key (unique id) of the current 'item' to the url 'menu_item' -->
+            {{ item.name }}
+            <!-- 'item.name' gets the name attribute of the current 'item' -->
+        </a>
+        <span class="menu-price">
+            <!-- Step 14Add DTL variable for price -->
+            ${{ item.price }}.00
+        </span>
+    </p>
+    <!-- Step 14: End or loop -->
+    {% endfor %}
+</div>
+<!--End col-->
+{% endblock %}
